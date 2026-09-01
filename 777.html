@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>777</title>
+
+  <!-- =========================
+       Tailwind
+  ========================== -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- =========================
+       Fonts
+  ========================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- =========================
+       Custom CSS
+  ========================== -->
+  <style>
+    :root {
+      --void: #060606;
+      --char: #131313;
+
+      --silver-dark: #5f6368;
+      --silver: #858a90;
+      --silver-light: #c2c5c8;
+      --white: #f5f6f7;
+    }
+
+    /* =========================
+       BODY
+    ========================== */
+
+    body {
+      font-family: "Cinzel", serif;
+
+      background:
+        radial-gradient(
+          ellipse 55% 45% at 50% 22%,
+          rgba(210, 214, 218, 0.10),
+          transparent 65%
+        ),
+        radial-gradient(
+          ellipse 120% 90% at 50% 100%,
+          rgba(0, 0, 0, 0.65),
+          transparent 60%
+        ),
+        linear-gradient(
+          180deg,
+          #060606 0%,
+          #131313 55%,
+          #060606 100%
+        );
+    }
+
+    /* =========================
+       HALO
+    ========================== */
+
+    .halo-animation {
+      animation: breathe 6s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+    }
+
+    /* =========================
+       MUSIC PLAYER
+    ========================== */
+
+    .player-c {
+      width: min(90vw, 480px);
+
+      display: flex;
+      align-items: center;
+
+      gap: 0.9rem;
+
+      padding: 0.65rem 1.1rem;
+
+      border-radius: 999px;
+
+      /* Less transparent */
+      background: rgba(255, 255, 255, 0.11);
+
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+
+      box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    /* =========================
+       PLAY BUTTON
+    ========================== */
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+
+      padding: 0;
+
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: var(--silver-light);
+
+      flex: 0 0 auto;
+
+      transition: color 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      color: var(--white);
+    }
+
+    .icon-btn svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .player-c .play {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* =========================
+       EQUALIZER
+    ========================== */
+
+    .player-c .eq {
+      flex: 0 0 auto;
+
+      display: flex;
+      align-items: flex-end;
+
+      gap: 2px;
+
+      height: 16px;
+    }
+
+    .player-c .eq span {
+      display: block;
+
+      width: 2.5px;
+      height: 30%;
+
+      background: #aeb2b6;
+
+      border-radius: 2px;
+
+      transition: height 0.15s ease;
+    }
+
+    .player-c.playing .eq span {
+      animation:
+        eqbounce 0.9s ease-in-out infinite;
+    }
+
+    .player-c .eq span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .player-c .eq span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .player-c .eq span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .player-c .eq span:nth-child(4) {
+      animation-delay: 0.45s;
+    }
+
+    @keyframes eqbounce {
+      0%,
+      100% {
+        height: 25%;
+      }
+
+      50% {
+        height: 100%;
+      }
+    }
+
+    /* =========================
+       SONG INFO
+    ========================== */
+
+    .player-c .info {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .player-c .title {
+      font-size: 0.72rem;
+
+      letter-spacing: 0.03em;
+
+      color: #b7bbc0;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-c .artist {
+      font-size: 0.58rem;
+
+      color: #777c81;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-c .time {
+      font-size: 0.6rem;
+
+      color: #858a90;
+
+      font-variant-numeric: tabular-nums;
+
+      flex: 0 0 auto;
+    }
+
+    /* =========================
+       LYRICS
+       darker, more opaque, blended into the dark background
+    ========================== */
+
+    .lyric-line {
+      position: fixed;
+
+      left: 50%;
+      top: 0;
+
+
+      z-index: 30;
+
+      font-family: "Cinzel", serif;
+
+      font-size:
+        clamp(
+          0.85rem,
+          2.2vw,
+          1.05rem
+        );
+
+      letter-spacing: 0.03em;
+
+      /* darker, closer to the background tone */
+      color: #34373a;
+
+      text-align: center;
+
+      white-space: nowrap;
+
+      /* subtle, not a glow — keeps it low-key */
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      will-change:
+        transform,
+        opacity;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 640px) {
+      .player-c {
+        width: 90vw;
+        padding: 0.65rem 0.9rem;
+      }
+
+      .lyric-line {
+        max-width: 90vw;
+
+        white-space: normal;
+
+        line-height: 1.6;
+      }
+    }
+  </style>
+</head>
+
+<body
+  class="
+    min-h-screen
+    overflow-x-hidden
+    overflow-y-auto
+    text-white
+  "
+>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main
+    class="
+      relative
+      z-10
+      min-h-screen
+      flex
+      items-center
+      justify-start
+    "
+  >
+
+    <!-- =========================
+         COMPOSITION
+    ========================== -->
+
+    <div
+      class="
+        relative
+        flex
+        min-h-0
+        w-full
+        flex-col
+        items-center
+        justify-start
+        pt-0
+      "
+    >
+
+      <!-- =========================
+           HALO
+      ========================== -->
+
+      <div
+        class="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-[18%]
+          z-0
+          aspect-square
+          w-[55%]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-[radial-gradient(circle,rgba(216,220,224,0.16)_0%,rgba(216,220,224,0.06)_45%,transparent_72%)]
+          blur-[6px]
+          halo-animation
+        "
+      ></div>
+
+
+      <!-- =========================
+           WINGS + 777
+      ========================== -->
+
+      <div
+        class="
+          relative
+          z-10
+          flex
+          w-[min(92vw,620px)]
+          items-center
+          justify-center
+        "
+      >
+
+        <!-- Angel Wings -->
+
+        <img
+          src="/majestic-black-angel-wings-spread-wide-open-on-white-background-free-png.png"
+          alt="Black angel wings"
+          class="
+            relative
+            z-[1]
+            block
+            h-auto
+            w-full
+            drop-shadow-[0_10px_24px_rgba(0,0,0,0.7)]
+          "
+        />
+
+
+        <!-- 777 -->
+
+        <div
+          class="
+            absolute
+            left-1/2
+            top-[73%]
+            z-[3]
+            -translate-x-1/2
+            -translate-y-1/2
+            whitespace-nowrap
+            font-['UnifrakturMaguntia']
+            text-[clamp(4.5rem,20vw,8.5rem)]
+            leading-none
+            text-transparent
+            bg-clip-text
+            bg-[linear-gradient(180deg,#f5f6f7_0%,#d8dce0_35%,#9aa0a6_70%,#4a4d52_100%)]
+            drop-shadow-[0_0_26px_rgba(216,220,224,0.28)]
+            drop-shadow-[0_2px_3px_rgba(0,0,0,0.9)]
+            pointer-events-none
+          "
+        >
+          777
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           TEXT SECTION
+      ========================== -->
+
+      <div
+        class="
+          relative
+          z-20
+          mt-[10px]
+          flex
+          flex-col
+          items-center
+        "
+      >
+
+        <!-- Eyebrow -->
+
+        <span
+          class="
+            mb-1
+            text-[0.66rem]
+            tracking-[0.35em]
+            text-[#858a90]
+            opacity-90
+          "
+        >
+          ✦ Lucky in life, blessed in love ✦
+        </span>
+
+
+        <!-- =========================
+             DIVIDER
+        ========================== -->
+
+        <div
+          class="
+            flex
+            items-center
+            justify-center
+            gap-2
+          "
+        >
+
+          <!-- Left line -->
+
+          <svg
+            viewBox="0 0 45 10"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-[10px] w-[45px]"
+          >
+            <line
+              x1="0"
+              y1="5"
+              x2="45"
+              y2="5"
+              stroke="#5f6368"
+              stroke-width="1"
+            />
+          </svg>
+
+
+          <!-- Star -->
+
+          <span
+            class="
+              text-[10px]
+              leading-none
+              text-[#777c81]
+            "
+          >
+            ✦
+          </span>
+
+
+          <!-- Right line -->
+
+          <svg
+            viewBox="0 0 45 10"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-[10px] w-[45px]"
+          >
+            <line
+              x1="0"
+              y1="5"
+              x2="45"
+              y2="5"
+              stroke="#5f6368"
+              stroke-width="1"
+            />
+          </svg>
+
+        </div>
+
+
+        <!-- =========================
+             CAPTION
+        ========================== -->
+
+        <p
+          class="
+            mt-1
+            mb-0
+            max-w-[55ch]
+            px-5
+            text-center
+            text-[0.82rem]
+            leading-7
+            tracking-[0.06em]
+            text-[#b7bbc0]
+            opacity-75
+          "
+        >
+
+          <b>A love written in the stars</b>
+
+          <br />
+
+          777 is a sign of soul-aligned love — the kind of connection that brings warmth, growth, and a sense of belonging. A rare bond that feels too meaningful to be accidental, as though two hearts found each other at exactly the right moment.
+
+        </p>
+
+
+        <!-- =========================
+             MUSIC PLAYER
+        ========================== -->
+
+        <div
+          class="group mt-[35px]"
+        >
+
+          <div
+            class="player-c"
+            data-player
+          >
+
+            <!-- Play / Pause -->
+
+            <button
+              class="icon-btn play"
+              type="button"
+              aria-label="Play or pause music"
+            >
+
+              <!-- Play icon -->
+
+              <svg
+                class="ic-play"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+
+
+              <!-- Pause icon -->
+
+              <svg
+                class="ic-pause"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                style="display: none"
+              >
+                <path
+                  d="M6 5h4v14H6zM14 5h4v14h-4z"
+                />
+              </svg>
+
+            </button>
+
+
+            <!-- Equalizer -->
+
+            <div class="eq">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+
+            <!-- Song information -->
+
+            <div class="info">
+
+              <div class="title">
+                Lose Yourself
+              </div>
+
+              <div class="artist">
+                Eminem
+              </div>
+
+            </div>
+
+
+            <!-- Current time -->
+
+            <span class="time cur">
+              0:00
+            </span>
+
+
+            <!-- Audio -->
+
+            <audio
+              class="audio-el"
+              src="/Eminem - Lose Yourself.mp3"
+              preload="metadata"
+            ></audio>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script>
+
+    /* ========================================
+       ELEMENTS
+    ======================================== */
+
+    const player =
+      document.querySelector("[data-player]");
+
+    const audio =
+      player.querySelector(".audio-el");
+
+    const playBtn =
+      player.querySelector(".play");
+
+    const playIcon =
+      player.querySelector(".ic-play");
+
+    const pauseIcon =
+      player.querySelector(".ic-pause");
+
+    const currentTimeEl =
+      player.querySelector(".cur");
+
+
+    /* ========================================
+       SETTINGS
+    ======================================== */
+
+    /*
+      How far the lyric is allowed to travel,
+      as a fraction of the distance between its
+      spawn point (bottom of screen) and the
+      player. 0.42 means it only covers 42% of
+      that distance before it's fully faded —
+      keeping it well below the caption/player,
+      never anywhere near them.
+    */
+    const TRAVEL_FRACTION = 0.55;
+
+    /*
+      Lyric is fully visible from progress 0 up to
+      this point, then fades to 0 by progress 1.
+      Lower = fades out sooner (safer, but shorter
+      "readable" window). Raise it only if lines
+      still aren't fading early enough.
+    */
+    const FADE_START_PROGRESS = 0.25;
+
+    /*
+      Lyric movement speed.
+
+      700 = faster
+      1000 = normal
+      1300 = slower
+      1500 = very slow
+    */
+
+    const LYRIC_SPEED = 700;
+
+
+    /* ========================================
+       LYRICS
+    ======================================== */
+
+    /*
+      Add your own lyric lines here.
+
+      t = seconds from beginning of song.
+
+      Example:
+
+      {
+        t: 12,
+        text: "Your lyric here"
+      }
+    */
+
+   const LYRICS = [
+  {
+    t: 1,
+    text: "Look"
+  },
+  {
+    t: 3,
+    text: "If you had"
+  },
+  {
+    t: 5,
+    text: "One shot"
+  },
+  {
+    t: 7,
+    text: "Or one opportunity"
+  },
+  {
+    t: 9,
+    text: "To seize everything you ever wanted"
+  },
+  {
+    t: 12,
+    text: "In one moment"
+  },
+  {
+    t: 14,
+    text: "Would you capture it"
+  },
+  {
+    t: 16,
+    text: "Or just let it slip?"
+  },
+  {
+    t: 18,
+    text: "Yo"
+  },
+  {
+    t: 20,
+    text: "His palms are sweaty, knees weak, arms are heavy"
+  },
+  {
+    t: 23,
+    text: "There’s vomit on his sweater already, mom’s spaghetti"
+  },
+  {
+    t: 26,
+    text: "He’s nervous, but on the surface he looks calm and ready"
+  },
+  {
+    t: 29,
+    text: "To drop bombs, but he keeps on forgettin’"
+  },
+  {
+    t: 32,
+    text: "What he wrote down, the whole crowd goes so loud"
+  },
+  {
+    t: 35,
+    text: "He opens his mouth, but the words won’t come out"
+  },
+  {
+    t: 38,
+    text: "He’s chokin’, how, everybody’s jokin’ now"
+  },
+  {
+    t: 41,
+    text: "The clocks run out, times up, over, blaow"
+  },
+  {
+    t: 44,
+    text: "Snap back to reality, ope there goes gravity"
+  },
+  {
+    t: 47,
+    text: "Ope, there goes Rabbit, he choked"
+  },
+  {
+    t: 50,
+    text: "He’s so mad, but he won’t give up that easy? No"
+  },
+  {
+    t: 53,
+    text: "He won’t have it, he knows his whole back’s to these ropes"
+  },
+  {
+    t: 56,
+    text: "It don’t matter, he’s dope, he knows that, but he’s broke"
+  },
+  {
+    t: 59,
+    text: "He’s so stagnant, he knows, when he goes back to this mobile home, that’s when it’s"
+  },
+  {
+    t: 62,
+    text: "Back to the lab again, yo, this whole rhapsody"
+  },
+  {
+    t: 65,
+    text: "Better go capture this moment and hope it don’t pass him"
+  },
+  {
+    t: 68,
+    text: "You better lose yourself in the music, the moment"
+  },
+  {
+    t: 71,
+    text: "You own it, you better never let it go"
+  },
+  {
+    t: 74,
+    text: "You only get one shot, do not miss your chance to blow"
+  },
+  {
+    t: 77,
+    text: "This opportunity comes once in a lifetime"
+  },
+  {
+    t: 80,
+    text: "You better lose yourself in the music, the moment"
+  },
+  {
+    t: 83,
+    text: "You own it, you better never let it go"
+  },
+  {
+    t: 86,
+    text: "You only get one shot, do not miss your chance to blow"
+  },
+  {
+    t: 89,
+    text: "This opportunity comes once in a lifetime"
+  },
+  {
+    t: 92,
+    text: "You better"
+  },
+  {
+    t: 95,
+    text: "His soul’s escaping, through this hole that is gaping"
+  },
+  {
+    t: 98,
+    text: "This world is mine for the taking"
+  },
+  {
+    t: 101,
+    text: "Make me king, as we move toward a New World Order"
+  },
+  {
+    t: 104,
+    text: "A normal life is borin’, but super stardom’s close to post mortem"
+  },
+  {
+    t: 107,
+    text: "It only grows harder, only grows hotter"
+  },
+  {
+    t: 110,
+    text: "He blows, it’s all over, these hoes is all on him"
+  },
+  {
+    t: 113,
+    text: "Coast to coast shows, he’s known as the Globetrotter"
+  },
+  {
+    t: 116,
+    text: "Lonely roads, God only knows, he’s grown farther from home, he’s no father"
+  },
+  {
+    t: 119,
+    text: "He goes home and barely knows his own daughter"
+  },
+  {
+    t: 122,
+    text: "But hold your nose ’cause here goes the cold water"
+  },
+  {
+    t: 125,
+    text: "These hoes don’t want him no mo’, he’s cold product"
+  },
+  {
+    t: 128,
+    text: "They moved on to the next schmo who flows, he nose dove and sold nada"
+  },
+  {
+    t: 131,
+    text: "So the soap opera is told and unfolds, I suppose it’s old partna, but the beat goes on"
+  },
+  {
+    t: 134,
+    text: "Da-da-dum, da-dum, da-da"
+  },
+  {
+    t: 137,
+    text: "You better lose yourself in the music, the moment"
+  },
+  {
+    t: 140,
+    text: "You own it, you better never let it go"
+  }
+
+    ];
+
+
+    /* ========================================
+       LYRICS STATE
+    ======================================== */
+
+    let firedIndex = -1;
+
+    const activeLyrics =
+      new Set();
+
+    const animationFrames =
+      new Map();
+
+
+    /* ========================================
+       FORMAT TIME
+    ======================================== */
+
+    function formatTime(seconds) {
+
+      if (
+        !isFinite(seconds) ||
+        isNaN(seconds)
+      ) {
+        return "0:00";
+      }
+
+      const minutes =
+        Math.floor(seconds / 60);
+
+      const secondsPart =
+        Math.floor(seconds % 60)
+          .toString()
+          .padStart(2, "0");
+
+      return `${minutes}:${secondsPart}`;
+    }
+
+
+    /* ========================================
+       PLAY / PAUSE
+    ======================================== */
+
+    playBtn.addEventListener(
+      "click",
+      async () => {
+
+        if (audio.paused) {
+
+          try {
+
+            await audio.play();
+
+          } catch (error) {
+
+            console.error(
+              "Audio could not play:",
+              error
+            );
+
+          }
+
+        } else {
+
+          audio.pause();
+
+        }
+
+      }
+    );
+
+
+    /* ========================================
+       PLAY EVENT
+    ======================================== */
+
+    audio.addEventListener(
+      "play",
+      () => {
+
+        playIcon.style.display =
+          "none";
+
+        pauseIcon.style.display =
+          "";
+
+        player.classList.add(
+          "playing"
+        );
+
+
+        /*
+          IMPORTANT:
+
+          We do NOT reset firedIndex.
+
+          So Pause → Play continues
+          from the current song position.
+        */
+
+        syncLyricIndex();
+
+      }
+    );
+
+
+    /* ========================================
+       PAUSE EVENT
+    ======================================== */
+
+    audio.addEventListener(
+      "pause",
+      () => {
+
+        playIcon.style.display =
+          "";
+
+        pauseIcon.style.display =
+          "none";
+
+        player.classList.remove(
+          "playing"
+        );
+
+
+        /*
+          Stop and remove currently
+          floating lyrics.
+        */
+
+        clearLyrics();
+
+      }
+    );
+
+
+    /* ========================================
+       CURRENT TIME
+    ======================================== */
+
+    audio.addEventListener(
+      "timeupdate",
+      () => {
+
+        currentTimeEl.textContent =
+          formatTime(
+            audio.currentTime
+          );
+
+      }
+    );
+
+
+    /* ========================================
+       FIND CURRENT LYRIC INDEX
+    ======================================== */
+
+    function syncLyricIndex() {
+
+      const currentTime =
+        audio.currentTime;
+
+      let index = -1;
+
+
+      for (
+        let i = 0;
+        i < LYRICS.length;
+        i++
+      ) {
+
+        if (
+          LYRICS[i].t <= currentTime
+        ) {
+
+          index = i;
+
+        } else {
+
+          break;
+
+        }
+
+      }
+
+
+      firedIndex = index;
+
+    }
+
+
+    /* ========================================
+       CLEAR ACTIVE LYRICS
+    ======================================== */
+
+    function clearLyrics() {
+
+      activeLyrics.forEach(
+        (element) => {
+
+          const frame =
+            animationFrames.get(
+              element
+            );
+
+          if (frame) {
+
+            cancelAnimationFrame(
+              frame
+            );
+
+          }
+
+          element.remove();
+
+        }
+      );
+
+
+      activeLyrics.clear();
+
+      animationFrames.clear();
+
+    }
+
+
+    /* ========================================
+       CREATE LYRIC
+    ======================================== */
+
+    function spawnLyricLine(
+      text,
+      duration
+    ) {
+
+      const element =
+        document.createElement(
+          "div"
+        );
+
+
+      element.className =
+        "lyric-line";
+
+
+      element.textContent =
+        text;
+
+
+      document.body.appendChild(
+        element
+      );
+
+
+      activeLyrics.add(
+        element
+      );
+
+
+      /* =========================
+         PLAYER POSITION
+      ========================== */
+
+      const playerRect =
+        player.getBoundingClientRect();
+
+
+      /*
+        Starting position:
+        just below viewport.
+      */
+
+      const startY =
+        window.innerHeight + 10;
+
+
+      /*
+        Where the lyric's travel stops. Computed
+        as a fraction of the distance to the player
+        so it always stays well below the caption
+        and the player — never close to either.
+      */
+
+      const totalDistance =
+        startY - playerRect.top;
+
+      const endY =
+        startY -
+        totalDistance *
+          TRAVEL_FRACTION;
+
+
+      const startTime =
+        performance.now();
+
+
+      /* =========================
+         ANIMATION
+      ========================== */
+
+      function animate(now) {
+
+        /*
+          If music is paused,
+          stop animation.
+
+          The lyric will be removed
+          by the pause event.
+        */
+
+        if (audio.paused) {
+
+          animationFrames.delete(
+            element
+          );
+
+          return;
+
+        }
+
+
+        /*
+          Progress from 0 → 1
+        */
+
+        const progress =
+          Math.min(
+            1,
+            (now - startTime) /
+              duration
+          );
+
+
+        /*
+          Smooth ease-out movement.
+        */
+
+        const eased =
+          1 -
+          Math.pow(
+            1 - progress,
+            2
+          );
+
+
+        /*
+          Vertical movement — travels from
+          the bottom of the screen up to
+          endY (well above the player) and
+          never goes past it.
+        */
+
+        const y =
+          startY +
+          (endY - startY) *
+            eased;
+
+
+        element.style.transform =
+          `translate(-50%, ${y}px)`;
+
+
+        /* =========================
+           OPACITY
+
+           Fades in quickly, holds fully
+           visible, then fades all the way
+           to 0 by the time progress hits 1
+           — which is also when it reaches
+           endY. So it's already invisible
+           by the time it's anywhere near
+           the player.
+        ========================== */
+
+        let opacity;
+
+        if (progress < 0.08) {
+
+          opacity = progress / 0.08;
+
+        } else if (
+          progress < FADE_START_PROGRESS
+        ) {
+
+          opacity = 1;
+
+        } else {
+
+          opacity =
+            Math.max(
+              0,
+              1 -
+                (progress -
+                  FADE_START_PROGRESS) /
+                  (1 - FADE_START_PROGRESS)
+            );
+
+        }
+
+
+        element.style.opacity =
+          opacity;
+
+
+        /* =========================
+           CONTINUE
+        ========================== */
+
+        if (
+          progress < 1 &&
+          opacity > 0
+        ) {
+
+          const frameId =
+            requestAnimationFrame(
+              animate
+            );
+
+
+          animationFrames.set(
+            element,
+            frameId
+          );
+
+        }
+
+
+        /* =========================
+           REMOVE
+        ========================== */
+
+        else {
+
+          animationFrames.delete(
+            element
+          );
+
+          activeLyrics.delete(
+            element
+          );
+
+          element.remove();
+
+        }
+
+      }
+
+
+      const frameId =
+        requestAnimationFrame(
+          animate
+        );
+
+
+      animationFrames.set(
+        element,
+        frameId
+      );
+
+    }
+
+
+    /* ========================================
+       LYRIC SYNCHRONIZATION
+    ======================================== */
+
+    audio.addEventListener(
+      "timeupdate",
+      () => {
+
+        if (audio.paused) {
+          return;
+        }
+
+
+        for (
+          let i = firedIndex + 1;
+          i < LYRICS.length;
+          i++
+        ) {
+
+          /*
+            Has this lyric's timestamp
+            been reached?
+          */
+
+          if (
+            audio.currentTime >=
+            LYRICS[i].t
+          ) {
+
+            const nextLyric =
+              LYRICS[i + 1];
+
+
+            /*
+              Calculate distance
+              to next lyric.
+            */
+
+            const gap =
+              nextLyric
+
+                ? Math.max(
+                    2.5,
+                    nextLyric.t -
+                      LYRICS[i].t
+                  )
+
+                : 4.5;
+
+
+            /*
+              ============================
+              SPEED CONTROL
+              ============================
+
+              700 = faster
+              1000 = normal
+              1300 = slower
+              1500 = very slow
+            */
+
+            const duration =
+              gap *
+              LYRIC_SPEED;
+
+
+            spawnLyricLine(
+              LYRICS[i].text,
+              duration
+            );
+
+
+            firedIndex = i;
+
+          }
+
+          else {
+
+            break;
+
+          }
+
+        }
+
+      }
+    );
+
+
+    /* ========================================
+       SEEKING
+    ======================================== */
+
+    audio.addEventListener(
+      "seeking",
+      () => {
+
+        /*
+          Remove old lyrics because
+          the song position changed.
+        */
+
+        clearLyrics();
+
+      }
+    );
+
+
+    /* ========================================
+       SEEKED
+    ======================================== */
+
+    audio.addEventListener(
+      "seeked",
+      () => {
+
+        /*
+          Find which lyric corresponds
+          to the new audio position.
+
+          The next lyric will be the
+          first one that appears.
+        */
+
+        syncLyricIndex();
+
+      }
+    );
+
+
+    /* ========================================
+       SONG ENDED
+    ======================================== */
+
+    audio.addEventListener(
+      "ended",
+      () => {
+
+        clearLyrics();
+
+        firedIndex =
+          LYRICS.length - 1;
+
+        playIcon.style.display =
+          "";
+
+        pauseIcon.style.display =
+          "none";
+
+        player.classList.remove(
+          "playing"
+        );
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
